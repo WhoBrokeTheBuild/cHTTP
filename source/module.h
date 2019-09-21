@@ -5,10 +5,12 @@
 
 bool load_module(const char * module_filename);
 
-void free_modules();
+void free_modules(void);
 
-void init_modules();
+void modules_init(void);
 
-void term_modules();
+void modules_term(void);
+
+bool is_module_loaded(const char * id);
 
 #endif // CHTTP_MODULE_H

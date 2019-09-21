@@ -2,6 +2,7 @@
 #include <dlfcn.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <chttp/chttp.h>
 
 typedef struct module_record
@@ -12,7 +13,9 @@ typedef struct module_record
     struct module_record *  next;
 } module_record_t;
 
-module_record_t * first_module_record = NULL;
+static module_record_t * first_module_record = NULL;
+
+module_record_t * add_module_record(void);
 
 module_record_t * add_module_record()
 {
@@ -63,28 +66,36 @@ void free_modules()
     }
 }
 
-void init_modules()
+void modules_init()
 {
     module_record_t * record = first_module_record;
     while (record) {
-        if (record->data) {
-            if (record->data->init) {
-                record->data->init();
-            }
-        }   
+        if (record->data->init) {
+            record->data->init();
+        }
         record = record->next;
     }
 }
 
-void term_modules()
+void modules_term()
 {
     module_record_t * record = first_module_record;
     while (record) {
-        if (record->data) {
-            if (record->data->term) {
-                record->data->term();
-            }
-        }   
+        if (record->data->term) {
+            record->data->term();
+        }
         record = record->next;
     }
+}
+
+bool is_module_loaded(const char * id)
+{
+    module_record_t * record = first_module_record;
+    while (record) {
+        if (strcmp(record->data->id, id) == 0) {
+            return true;
+        }
+        record = record->next;
+    }
+    return false;
 }

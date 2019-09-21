@@ -7,7 +7,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-config_t config;
+static config_t config;
+
+void free_config(void);
+void free_site_config(site_config_t * site);
 
 listen_config_t * add_listen_config(site_config_t * site)
 {
@@ -46,7 +49,7 @@ site_config_t * add_site_config()
 bool parse_config_file(const char * filename)
 {
     site_config_t * site = &config.default_site;
-
+    
     printf("Loading %s\n", filename);
 
     FILE * file = fopen(filename, "rt");
@@ -86,9 +89,14 @@ bool parse_config_file(const char * filename)
                 fprintf(stderr, "Failed to load module %s\n", argument);
                 exit(1);
             }
-        }
+        } 
         else if (strcmp(command, "DocumentRoot") == 0) {
-            site->document_root = strdup(argument);
+            if (site->document_root) {
+                fprintf(stderr, "Only one DocumentRoot is allowed\n");
+            }
+            else {
+                site->document_root = strdup(argument);
+            }
         }
         else if (strcmp(command, "Listen") == 0) {
             listen_config_t * listen = add_listen_config(site);

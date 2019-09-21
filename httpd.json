@@ -1,0 +1,26 @@
+{
+    "Modules": [
+        "modules/hello/hello_module.so",
+        "modules/header/header_module.so"
+    ],
+    "Sites": [
+        {
+            "DocumentRoot": "html",
+            "ListenAddresses": [
+                "0.0.0.0:80",
+                "[::]:80"
+            ]
+        },
+        {
+            "Server": "whyamisticky.info",
+            "DocumentRoot": "sites/whyamisticky.info",
+            "ListenAddresses": [
+                "0.0.0.0:443 ssl",
+                "[::]:443 ssl"
+            ]
+        }
+    ],
+    "Includes": [
+        "conf.d/*"
+    ]
+}

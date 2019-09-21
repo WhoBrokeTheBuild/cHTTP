@@ -8,9 +8,10 @@ int main(int argc, char** argv)
 
     parse_config_file("httpd.conf");
 
-    init_modules();
+    modules_init();
 
-    term_modules();
+    
+    modules_term();
 
     return 0;
 }

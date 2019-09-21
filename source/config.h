@@ -45,10 +45,10 @@ typedef struct
 
 listen_config_t * add_listen_config(site_config_t * site);
 
-site_config_t * add_site_config();
+site_config_t * add_site_config(void);
 
 bool parse_config_file(const char * filename);
 
-void free_all_config();
+void free_all_config(void);
 
 #endif // CHTTP_CONFIG_H
